@@ -1,0 +1,23 @@
+@use "../../styles/variables.module.scss" as *;
+
+.loginFormContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loginFormWrapper {
+  margin-top: 3rem;
+  max-width: 32rem;
+  width: 100%;
+}
+
+.titleWrapper {
+  margin-top: 20%;
+}
+.title {
+  font-weight: 700;
+
+  color: $primary;
+}
