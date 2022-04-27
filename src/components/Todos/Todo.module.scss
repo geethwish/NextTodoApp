@@ -1,0 +1,54 @@
+@use "../../../styles/variables.module.scss" as *;
+.todoSectionHeader {
+  width: 100%;
+  min-height: 4.3rem;
+  margin-bottom: 5px;
+}
+.todoHeaderBackground {
+  background-color: $primary;
+  height: 100%;
+  padding: 1rem;
+}
+
+.todoHeaderTitle {
+  color: $light0;
+}
+
+.todoHeaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+}
+
+.todoHeaderSectionLeft {
+  display: flex;
+  align-items: center;
+}
+
+.todoHeaderSectionRight {
+  color: $light0;
+}
+
+.todoCard {
+  width: 100%;
+  min-height: 4rem;
+}
+
+.todoCardBackground {
+  background-color: $light2;
+  padding: 1rem;
+  border-radius: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo {
+  background-color: #f6ed97;
+}
+
+.done {
+  background-color: #a9f697;
+}

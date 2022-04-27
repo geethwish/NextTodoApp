@@ -1,0 +1,17 @@
+@use "../../../styles/variables.module.scss" as *;
+
+.activeRoute {
+  color: $light0;
+}
+
+.activeRouteMobile {
+  color: $primary;
+}
+
+.inactiveRoute {
+  color: $dark2;
+}
+
+.logoText {
+  font-weight: 700;
+}
