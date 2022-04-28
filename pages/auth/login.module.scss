@@ -14,10 +14,16 @@
 }
 
 .titleWrapper {
-  margin-top: 20%;
+  margin-top: 15%;
 }
 .title {
   font-weight: 700;
 
   color: $primary;
+}
+
+.contentContainer {
+  padding-top: 1.5rem;
+  padding-left: 0rem;
+  padding-right: 0rem;
 }
