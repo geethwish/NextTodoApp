@@ -34,6 +34,7 @@
 .todoCard {
   width: 100%;
   min-height: 4rem;
+  margin-bottom: 5px;
 }
 
 .todoCardBackground {
@@ -43,6 +44,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 540px) {
+    display: block;
+  }
 }
 
 .todo {
@@ -51,4 +56,13 @@
 
 .done {
   background-color: #a9f697;
+}
+
+.todoTitleSection {
+  display: flex;
+  align-items: center;
+}
+
+.checked {
+  text-decoration-line: line-through;
 }

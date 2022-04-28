@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 // styles
 import styles from './Navbar.module.scss'
@@ -58,29 +59,6 @@ const Navbar = () => {
 
     };
 
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-
-        </Menu>
-    );
 
     const renderMobileMenu = (
         <Menu
@@ -131,7 +109,7 @@ const Navbar = () => {
                         <>
                             <IconButton
                                 size="large"
-                                edge="end"
+                                //edge="end"
                                 aria-label="account of current user"
                                 aria-controls={menuId}
                                 aria-haspopup="true"
@@ -141,11 +119,11 @@ const Navbar = () => {
                                 className={path === '/acctount' ? styles.activeRouteMobile : styles.inactiveRoute}
                             >
 
-                                <AccountCircle />
+                                <LogoutIcon />
 
                             </IconButton>
 
-                            <p> Account  </p>
+                            <p> Sign Out</p>
 
                         </>
 
@@ -203,7 +181,7 @@ const Navbar = () => {
 
                                 <Link href="/" passHref>
 
-                                    <IconButton
+                                    <MenuItem
                                         size="large"
                                         aria-label="show 17 new notifications"
                                         color="inherit"
@@ -217,7 +195,7 @@ const Navbar = () => {
                                             Tasks
                                         </Typography>
 
-                                    </IconButton>
+                                    </MenuItem>
 
                                 </Link>
 
@@ -225,25 +203,20 @@ const Navbar = () => {
                                 {
                                     !isAuth && <Link href="/account" passHref>
 
-                                        <IconButton
-                                            size="large"
-                                            edge="end"
-                                            aria-label="account of current user"
-                                            aria-controls={menuId}
-                                            aria-haspopup="true"
+                                        <MenuItem
                                             onClick={handleProfileMenuOpen}
                                             color="inherit"
                                             sx={{ flexDirection: 'column' }}
                                             className={styles.inactiveRoute}
                                         >
 
-                                            <AccountCircle />
+                                            <LogoutIcon />
 
                                             <Typography variant="body1" sx={{ fontSize: '12px' }}>
-                                                Account
+                                                Sign Out
                                             </Typography>
 
-                                        </IconButton>
+                                        </MenuItem>
 
                                     </Link>
                                 }
@@ -251,11 +224,9 @@ const Navbar = () => {
                                 {
                                     !isAuth && <Link href="/login" passHref>
 
-                                        <IconButton
-                                            size="large"
-                                            aria-label="show 17 new notifications"
-                                            color="inherit"
-                                            sx={{ flexDirection: 'column' }}
+                                        <MenuItem
+
+                                            sx={{ flexDirection: 'column', alignItems: 'center', display: 'flex' }}
                                             className={styles.inactiveRoute}
                                         >
 
@@ -265,7 +236,7 @@ const Navbar = () => {
                                                 Login
                                             </Typography>
 
-                                        </IconButton>
+                                        </MenuItem>
 
                                     </Link>
                                 }
@@ -296,7 +267,6 @@ const Navbar = () => {
 
                 {renderMobileMenu}
 
-                {renderMenu}
 
             </Box>
 

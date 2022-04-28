@@ -7,11 +7,14 @@ import Todo from "./Todo"
 import styles from './Todo.module.scss'
 
 import AddIcon from '@mui/icons-material/Add';
+import TaskCreateEditForm from "../TaskCreateEditForm";
 
 
 const Todos = (props) => {
 
     const [alignment, setAlignment] = useState('web');
+    const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState('new');
 
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);
@@ -31,6 +34,32 @@ const Todos = (props) => {
             status: 'done'
         }
     ]
+
+    const deleteTodo = (id) => {
+
+        alert(`todoDeleted${id}`)
+    }
+
+    const editTodo = (id) => {
+
+        alert("todoDeleted", id)
+    }
+
+    const handleChecked = (id) => {
+        alert("checked")
+    }
+
+    const handleFormClose = () => {
+
+        setOpen(false);
+
+    }
+
+    const handleFormOpen = () => {
+
+        setOpen(true);
+
+    }
 
     return (
         <>
@@ -76,7 +105,12 @@ const Todos = (props) => {
 
                                     <div className={styles.todoHeaderSectionRight}>
 
-                                        <Button variant="filled" color="light0" startIcon={<AddIcon />}>
+                                        <Button
+                                            variant="filled"
+                                            color="light0"
+                                            startIcon={<AddIcon />}
+                                            onClick={handleFormOpen}
+                                        >
                                             New Task
                                         </Button>
 
@@ -90,12 +124,24 @@ const Todos = (props) => {
 
                         {
                             todoList && todoList.length > 0 &&
-                            todoList.map((todo, index) => <Todo key={index} todo={todo} />)
+                            todoList.map((todo, index) => <Todo
+                                key={index}
+                                todo={todo}
+                                handleChecked={handleChecked}
+                                deleteTodo={deleteTodo}
+                                editTodo={editTodo}
+                            />)
                         }
 
                     </Grid>
 
                 </Grid>
+
+                <TaskCreateEditForm
+                    mode={mode}
+                    open={open}
+                    handleFormClose={handleFormClose}
+                />
 
             </Container>
 
