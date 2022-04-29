@@ -177,7 +177,9 @@ const Todos = (props) => {
     }
 
     useEffect(() => {
+
         tokenSetter()
+
         getTodos()
 
     }, [])

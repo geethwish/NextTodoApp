@@ -43,7 +43,6 @@ const Navbar = () => {
 
         router.push('/auth');
 
-
     };
 
     const handleMobileMenuClose = () => {

@@ -2,19 +2,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import App from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
-import { Provider, useSelector } from 'react-redux';
-import { AppProps } from 'next/app';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-
+import { wrapper } from '../redux/store';
 
 import '../styles/globals.css'
-import { wrapper } from '../redux/store';
-import { useRouter } from 'next/router';
 
 const clientSideEmotionCache = createEmotionCache();
 

@@ -20,7 +20,6 @@ export const getUserInfo = () => (async dispatch => {
 
 })
 
-
 export const register = (data) => async dispatch => {
 
     const path = `${url}auth/register`;

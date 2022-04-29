@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 import Navbar from '../src/components/Navbar';
 import Todos from '../src/components/Todos/Todos';
 
