@@ -274,7 +274,6 @@ const Todos = (props) => {
                     update={saveChangedTodo}
                 />
 
-
             </Container>
 
         </>

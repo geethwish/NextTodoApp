@@ -96,7 +96,7 @@ const TaskCreateEditForm = (props) => {
             })
         }
 
-    }, [submitNew, tempTodo])
+    }, [submitNew, tempTodo, props])
 
 
     return (

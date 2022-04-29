@@ -60,6 +60,7 @@ export const register = (data) => async dispatch => {
         })
         .catch(function(error) {
 
+            initialData.isLoading = false;
             initialData.isError = true;
             initialData.message = error.response.data.message
 
