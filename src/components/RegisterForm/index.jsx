@@ -84,7 +84,6 @@ const RegisterForm = (props) => {
     }, [userInfo, dispatch])
 
 
-
     return (
         <>
             <ValidatorForm

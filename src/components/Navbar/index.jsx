@@ -10,8 +10,10 @@ import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { getUserInfo, logout } from '../../../redux/actions/user';
+
 // icons
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import PersonIcon from '@mui/icons-material/Person';
@@ -19,20 +21,17 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 // styles
 import styles from './Navbar.module.scss'
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from '../../../redux/actions/user';
 
 const Navbar = () => {
     const router = useRouter();
     const user = useSelector(userInfo => userInfo.user.authenticated);
     const dispatch = useDispatch();
 
-    const path = router.pathname;
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-    const [isAuth, setIsAuth] = useState(user ? true : false)
+    const [isAuth, setIsAuth] = useState(user ? true : false);
 
+    const path = router.pathname;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const menuId = 'primary-search-account-menu';
@@ -40,7 +39,10 @@ const Navbar = () => {
 
     const handleProfileMenuOpen = (event) => {
 
-        setAnchorEl(event.currentTarget);
+        dispatch(logout());
+
+        router.push('/auth');
+
 
     };
 
@@ -65,8 +67,17 @@ const Navbar = () => {
     };
 
     useEffect(() => {
-        dispatch(getUserInfo())
+
+        dispatch(getUserInfo());
+
     }, [])
+
+    useEffect(() => {
+
+        setIsAuth(user ? true : false)
+
+    }, [user])
+
 
 
     const renderMobileMenu = (
@@ -113,30 +124,25 @@ const Navbar = () => {
             <MenuItem>
 
                 {
-                    isAuth && <Link href="/account" passHref>
+                    isAuth && <>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                            color="inherit"
+                            sx={{ flexDirection: 'column' }}
+                            className={path === '/auth' ? styles.activeRouteMobile : styles.inactiveRoute}
+                        >
 
-                        <>
-                            <IconButton
-                                size="large"
-                                //edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                                sx={{ flexDirection: 'column' }}
-                                className={path === '/acctount' ? styles.activeRouteMobile : styles.inactiveRoute}
-                            >
+                            <LogoutIcon />
 
-                                <LogoutIcon />
+                        </IconButton>
 
-                            </IconButton>
+                        <p> Sign Out</p>
 
-                            <p> Sign Out</p>
-
-                        </>
-
-                    </Link>
+                    </>
                 }
 
                 {
@@ -203,7 +209,7 @@ const Navbar = () => {
                                         aria-label="show 17 new notifications"
                                         color="inherit"
                                         className={styles.activeRoute}
-                                        sx={{ flexDirection: 'column' }}
+                                        sx={{ flexDirection: 'column', ml: 2 }}
                                     >
 
                                         <AssignmentTurnedInIcon size={12} />
@@ -218,7 +224,7 @@ const Navbar = () => {
 
 
                                 {
-                                    isAuth && <Link href="/account" passHref>
+                                    isAuth && <>
 
                                         <MenuItem
                                             onClick={handleProfileMenuOpen}
@@ -235,11 +241,11 @@ const Navbar = () => {
 
                                         </MenuItem>
 
-                                    </Link>
+                                    </>
                                 }
 
                                 {
-                                    !isAuth && <Link href="/login" passHref>
+                                    !isAuth && <Link href="/auth" passHref>
 
                                         <MenuItem
 
@@ -284,7 +290,6 @@ const Navbar = () => {
 
                 {renderMobileMenu}
 
-
             </Box>
 
         </>
@@ -297,7 +302,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    getUserInfo: getUserInfo
+    getUserInfo: getUserInfo,
+    logout: logout
 }
 
 

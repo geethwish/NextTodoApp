@@ -4,6 +4,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState, useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import axios from "axios";
+import { useRouter } from 'next/router';
 
 import { apiUrl } from "../../../config/api";
 
@@ -17,6 +18,8 @@ import tokenSetter from "../../../config/tokenSetter";
 
 const Todos = (props) => {
 
+    const router = useRouter()
+
     const [alignment, setAlignment] = useState('all');
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState('new');
@@ -24,7 +27,6 @@ const Todos = (props) => {
     const [tempTodo, setTempTodo] = useState({})
 
     const api = apiUrl;
-
 
     const handleFormClose = () => {
 
@@ -42,7 +44,6 @@ const Todos = (props) => {
 
     }
 
-
     // Fet all todo belong to specific user
     const getTodos = (params) => {
 
@@ -57,7 +58,7 @@ const Todos = (props) => {
 
             }).catch((err) => {
 
-                console.log(err);
+                router.push('/auth')
 
             })
 

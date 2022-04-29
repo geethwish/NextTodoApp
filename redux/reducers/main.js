@@ -20,9 +20,13 @@ const mainReducer = (state = initialState, action) => {
 
         case types.GET_USER:
 
-            console.log("red", action.payload);
-
             return { authenticated: action.payload }
+
+            break;
+
+        case types.GET_USER:
+
+            return { ...initialState }
 
             break;
 
