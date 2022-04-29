@@ -9,8 +9,6 @@ import EditIcon from '@mui/icons-material/Edit';
 
 const Todo = ({ todo, handleChecked, deleteTodo, editTodo }) => {
 
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-
     return (
         <div>
             <Box className={styles.todoCard}>
@@ -18,10 +16,11 @@ const Todo = ({ todo, handleChecked, deleteTodo, editTodo }) => {
                 <Paper elevation={0} className={styles.todoCardBackground}>
 
                     <div className={styles.todoTitleSection}>
+
                         <FormControlLabel
                             control={<Checkbox
                                 defaultChecked={todo.status === 'done' ? true : false}
-                                onChange={() => handleChecked(todo.id)}
+                                onChange={() => handleChecked(todo, todo.status === 'done' ? 'todo' : 'done')}
                             />}
                         />
 
@@ -34,23 +33,23 @@ const Todo = ({ todo, handleChecked, deleteTodo, editTodo }) => {
                     <div>
 
                         <Chip
-                            label={todo.status === 'done' ? 'Done' : 'Todo'}
+                            label={todo.status === 'done' ? 'Done' : todo.status === "inprogress" ? "Inprogress" : 'Todo'}
                             size='small'
-                            className={todo.status === 'done' ? styles.done : styles.todo}
+                            className={todo.status === 'done' ? styles.done : todo.status === "inprogress" ? styles.inprogress : styles.todo}
                             sx={{ mr: 1 }}
                         />
 
                         <IconButton
                             aria-label="edit"
                             sx={{ mr: 1 }}
-                            onClick={() => editTodo(todo.id)}
+                            onClick={() => editTodo(todo)}
                         >
                             <EditIcon />
                         </IconButton>
 
                         <IconButton
                             aria-label="delete"
-                            onClick={() => deleteTodo(todo.id)}
+                            onClick={() => deleteTodo(todo._id)}
                         >
                             <DeleteIcon />
                         </IconButton>

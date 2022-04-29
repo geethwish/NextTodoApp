@@ -15,7 +15,7 @@ import styles from './login.module.scss';
 
 
 const Login = () => {
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState("1");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -45,12 +45,12 @@ const Login = () => {
                         <TabContext value={value}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                    <Tab label="Login" value={1} />
-                                    <Tab label="Register" value={2} />
+                                    <Tab label="Login" value={"1"} />
+                                    <Tab label="Register" value={"2"} />
                                 </TabList>
                             </Box>
-                            <TabPanel className={styles.contentContainer} value={1}> <LoginForm /></TabPanel>
-                            <TabPanel className={styles.contentContainer} value={2}><RegisterForm /></TabPanel>
+                            <TabPanel className={styles.contentContainer} value={"1"}> <LoginForm /></TabPanel>
+                            <TabPanel className={styles.contentContainer} value={"2"}><RegisterForm /></TabPanel>
 
                         </TabContext>
 

@@ -14,6 +14,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useEffect, useState } from 'react';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -55,13 +56,48 @@ BootstrapDialogTitle.propTypes = {
 };
 
 
-const TaskCreateEditForm = ({ open, handleFormClose, mode }) => {
+const TaskCreateEditForm = (props) => {
+
+    const { open, handleFormClose, mode, save, update, tempTodo } = props
 
     const submitNew = mode === 'new' ? true : false;
 
+    const [todo, setTodo] = useState({
+        status: 'todo',
+        title: ''
+    })
+
+
     const handleClose = () => {
+
         handleFormClose(false);
+
     };
+
+    const onHandleChange = (e) => {
+
+        setTodo({
+            ...todo,
+            [e.target.name]: e.target.value
+        })
+    };
+
+    useEffect(() => {
+
+        if (!submitNew) {
+
+            setTodo(tempTodo);
+
+        } else {
+
+            setTodo({
+                status: 'todo',
+                title: ''
+            })
+        }
+
+    }, [submitNew, tempTodo])
+
 
     return (
         <div>
@@ -72,7 +108,7 @@ const TaskCreateEditForm = ({ open, handleFormClose, mode }) => {
             >
 
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    {submitNew ? 'Add Todo' : `Update Todo 1`}
+                    {submitNew ? 'Add Todo' : `Update Todo - ${todo.title}`}
                 </BootstrapDialogTitle>
 
                 <DialogContent dividers>
@@ -87,8 +123,11 @@ const TaskCreateEditForm = ({ open, handleFormClose, mode }) => {
 
                                 <RadioGroup
                                     row
-                                    aria-labelledby="todoStatus"
-                                    name="todoStatus"
+                                    id="status"
+                                    aria-labelledby="status"
+                                    name="status"
+                                    value={todo.status}
+                                    onChange={onHandleChange}
                                 >
 
                                     <FormControlLabel value="todo" control={<Radio />} label="Todo" />
@@ -109,6 +148,9 @@ const TaskCreateEditForm = ({ open, handleFormClose, mode }) => {
                                 id="title"
                                 label="Todo Title"
                                 variant="filled"
+                                value={todo.title}
+                                name={"title"}
+                                onChange={onHandleChange}
                                 fullWidth
                             />
 
@@ -120,9 +162,17 @@ const TaskCreateEditForm = ({ open, handleFormClose, mode }) => {
 
                 <DialogActions>
 
-                    <Button autoFocus onClick={handleClose}>
-                        Save
-                    </Button>
+                    {
+                        submitNew && <Button autoFocus onClick={() => save(todo)}>
+                            Save
+                        </Button>
+                    }
+
+                    {
+                        !submitNew && <Button autoFocus onClick={() => update(todo)}>
+                            Update
+                        </Button>
+                    }
 
                 </DialogActions>
 

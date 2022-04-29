@@ -1,57 +1,38 @@
 import { Box, Button, Container, Grid, InputLabel, MenuItem, Paper, Typography } from "@mui/material"
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useState } from "react";
-import Todo from "./Todo"
-
-import styles from './Todo.module.scss'
-
+import { useState, useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import TaskCreateEditForm from "./TodoCreateEditForm";
+import axios from "axios";
 
+import { apiUrl } from "../../../config/api";
+
+//components
+import Todo from "./Todo"
+import TodoCreateEditForm from "./TodoCreateEditForm";
+
+// styles
+import styles from './Todo.module.scss'
+import tokenSetter from "../../../config/tokenSetter";
 
 const Todos = (props) => {
 
-    const [alignment, setAlignment] = useState('web');
+    const [alignment, setAlignment] = useState('all');
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState('new');
+    const [todoList, setTodoList] = useState([]);
+    const [tempTodo, setTempTodo] = useState({})
 
-    const handleChange = (event, newAlignment) => {
-        setAlignment(newAlignment);
-    };
+    const api = apiUrl;
 
-    const todoList = [
-        {
-            id: 1,
-            title: 'Lorem Ipsum 20 equal tonamoseo101',
-            description: 'lorem',
-            status: 'todo'
-        },
-        {
-            id: 2,
-            title: 'Notatum spenolia korki200 eponil',
-            description: 'lorem',
-            status: 'done'
-        }
-    ]
-
-    const deleteTodo = (id) => {
-
-        alert(`todoDeleted${id}`)
-    }
-
-    const editTodo = (id) => {
-
-        alert("todoDeleted", id)
-    }
-
-    const handleChecked = (id) => {
-        alert("checked")
-    }
 
     const handleFormClose = () => {
 
         setOpen(false);
+
+        setTempTodo({})
+
+        setMode("new")
 
     }
 
@@ -60,6 +41,146 @@ const Todos = (props) => {
         setOpen(true);
 
     }
+
+
+    // Fet all todo belong to specific user
+    const getTodos = (params) => {
+
+        const apiPath = `${api}todo/all`;
+
+        if (params === 'all' || params === '' ||
+            params === 'null' || params === undefined) {
+
+            axios.get(apiPath).then((response) => {
+
+                setTodoList(response.data);
+
+            }).catch((err) => {
+
+                console.log(err);
+
+            })
+
+        } else {
+
+            axios.get(apiPath, {
+                params: {
+                    status: params
+                }
+            }).then((response) => {
+
+                setTodoList(response.data);
+
+            }).catch((err) => {
+
+                console.log(err);
+
+            })
+
+        }
+
+    }
+
+    const handleChange = (event, newAlignment) => {
+
+        setAlignment(newAlignment);
+
+        getTodos(newAlignment)
+
+    };
+
+    // Delete todo
+    const deleteTodo = (id) => {
+
+        const apiPath = `${api}todo/${id}`;
+
+        axios.delete(apiPath).then((response) => {
+
+            getTodos();
+
+        }).catch((err) => {
+
+            console.log(err);
+        })
+    }
+
+    const editTodo = (data) => {
+
+        setTempTodo(data);
+
+        setMode("update");
+
+        setOpen(true);
+
+    }
+
+    // update changed todo
+    const saveChangedTodo = (todo) => {
+        const apiPath = `${api}todo/${todo._id}`;
+
+        axios.put(apiPath, todo).then((response) => {
+
+            getTodos();
+
+            setTempTodo({})
+
+            setMode("new")
+
+            setOpen(false)
+
+        }).catch((err) => {
+
+            console.log(err);
+        })
+    }
+
+    // change todo status using check box
+    const handleChecked = (todo, status) => {
+
+        const apiPath = `${api}todo/${todo._id}`;
+
+        axios.put(apiPath, { ...todo, status: status })
+            .then((response) => {
+
+                getTodos();
+
+            }).catch((err) => {
+
+                console.log(err);
+
+            })
+
+    }
+
+    // add New todo
+    const addTodo = (data) => {
+
+        const apiPath = `${api}todo`;
+
+        axios.post(apiPath, data).then((response) => {
+
+            getTodos();
+
+        }).catch((err) => {
+
+            console.log(err);
+        })
+    }
+
+    const handleSubmit = (formSubmitData) => {
+
+        setOpen(false);
+
+        addTodo(formSubmitData);
+
+    }
+
+    useEffect(() => {
+        tokenSetter()
+        getTodos()
+
+    }, [])
+
 
     return (
         <>
@@ -91,13 +212,16 @@ const Todos = (props) => {
                                             size="small"
                                             sx={{ ml: 2 }}
                                             onChange={handleChange}
+                                            fullWidth
                                         >
 
-                                            <ToggleButton value="web">All</ToggleButton>
+                                            <ToggleButton value="all">All</ToggleButton>
 
-                                            <ToggleButton value="android">Todo</ToggleButton>
+                                            <ToggleButton value="todo">Todo</ToggleButton>
 
-                                            <ToggleButton value="ios">Done</ToggleButton>
+                                            <ToggleButton value="inprogress">Inprogress</ToggleButton>
+
+                                            <ToggleButton value="done">Done</ToggleButton>
 
                                         </ToggleButtonGroup>
 
@@ -130,6 +254,7 @@ const Todos = (props) => {
                                 handleChecked={handleChecked}
                                 deleteTodo={deleteTodo}
                                 editTodo={editTodo}
+                                submit={handleSubmit}
                             />)
                         }
 
@@ -137,10 +262,13 @@ const Todos = (props) => {
 
                 </Grid>
 
-                <TaskCreateEditForm
+                <TodoCreateEditForm
                     mode={mode}
                     open={open}
+                    tempTodo={tempTodo}
                     handleFormClose={handleFormClose}
+                    save={handleSubmit}
+                    update={saveChangedTodo}
                 />
 
 

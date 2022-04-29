@@ -12,6 +12,11 @@
 
 .todoHeaderTitle {
   color: $light0;
+  min-width: 100px;
+
+  @media (max-width: 540px) {
+    min-width: 90%;
+  }
 }
 
 .todoHeaderWrapper {
@@ -25,6 +30,11 @@
 .todoHeaderSectionLeft {
   display: flex;
   align-items: center;
+
+  @media (max-width: 540px) {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
 }
 
 .todoHeaderSectionRight {
@@ -56,6 +66,10 @@
 
 .done {
   background-color: #a9f697;
+}
+
+.inprogress {
+  background-color: #ec6fd5;
 }
 
 .todoTitleSection {

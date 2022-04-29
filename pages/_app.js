@@ -1,19 +1,28 @@
-import '../styles/globals.css'
+
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import { ThemeProvider } from '@mui/material/styles';
+import App from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
+import { AppProps } from 'next/app';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 
+
+import '../styles/globals.css'
+import { wrapper } from '../redux/store';
 
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps, emotionCache = clientSideEmotionCache }) {
 
+
+
     return (
+
         <CacheProvider value={emotionCache}>
 
             <Head>
@@ -31,6 +40,7 @@ function MyApp({ Component, pageProps, emotionCache = clientSideEmotionCache }) 
             </ThemeProvider>
 
         </CacheProvider>
+
     )
 }
 
@@ -40,4 +50,5 @@ MyApp.propTypes = {
     pageProps: PropTypes.object.isRequired,
 };
 
-export default MyApp
+
+export default wrapper.withRedux(MyApp);

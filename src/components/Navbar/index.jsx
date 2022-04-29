@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { IconButton } from '@mui/material';
@@ -19,14 +19,19 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 // styles
 import styles from './Navbar.module.scss'
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { getUserInfo } from '../../../redux/actions/user';
 
 const Navbar = () => {
-    const router = useRouter()
+    const router = useRouter();
+    const user = useSelector(userInfo => userInfo.user.authenticated);
+    const dispatch = useDispatch();
+
     const path = router.pathname;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-    const [isAuth, setIsAuth] = useState(false)
+    const [isAuth, setIsAuth] = useState(user ? true : false)
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -58,6 +63,10 @@ const Navbar = () => {
         setMobileMoreAnchorEl(event.currentTarget);
 
     };
+
+    useEffect(() => {
+        dispatch(getUserInfo())
+    }, [])
 
 
     const renderMobileMenu = (
@@ -104,7 +113,7 @@ const Navbar = () => {
             <MenuItem>
 
                 {
-                    !isAuth && <Link href="/account" passHref>
+                    isAuth && <Link href="/account" passHref>
 
                         <>
                             <IconButton
@@ -177,6 +186,14 @@ const Navbar = () => {
                                 TodoZ
                             </Typography>
 
+                            <Typography
+                                variant="suntitle2"
+                                component="div"
+                                className={styles.logoText}
+                            >
+                                Hi {user && user.name}
+                            </Typography>
+
                             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
                                 <Link href="/" passHref>
@@ -201,7 +218,7 @@ const Navbar = () => {
 
 
                                 {
-                                    !isAuth && <Link href="/account" passHref>
+                                    isAuth && <Link href="/account" passHref>
 
                                         <MenuItem
                                             onClick={handleProfileMenuOpen}
@@ -275,4 +292,13 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+const mapStateToProps = state => ({
+    userInfo: state.user
+})
+
+const mapDispatchToProps = {
+    getUserInfo: getUserInfo
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

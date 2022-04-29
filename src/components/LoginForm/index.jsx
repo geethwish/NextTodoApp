@@ -1,4 +1,6 @@
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { connect } from 'react-redux';
+import { setInfo } from '../../../redux/actions/user';
 
 import styles from './LoginForm.module.scss';
 
@@ -44,4 +46,12 @@ const LoginForm = (props) => {
     )
 }
 
-export default LoginForm
+const mapStateToProps = state => ({
+    userInfo: state.users
+})
+
+const mapDispatchToProps = {
+    setInfo: setInfo
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)
